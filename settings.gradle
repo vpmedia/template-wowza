@@ -1,0 +1,28 @@
+//
+//=BEGIN CLOSED LICENSE
+//
+// Copyright(c) 2012 András Csizmadia.
+// http://www.vpmedia.eu
+//
+// For information about the licensing and copyright please 
+// contact András Csizmadia at andras@vpmedia.eu.
+//
+//=END CLOSED LICENSE
+//
+
+include 'vpmedia-wms-app',
+'vpmedia-wms-bwcheck',
+'vpmedia-wms-connectionlimiter',
+'vpmedia-wms-dbauthentication',
+'vpmedia-wms-fme',
+'vpmedia-wms-hotlinkdenial',
+'vpmedia-wms-keepalive',
+'vpmedia-wms-medialoader',
+'vpmedia-wms-mediareader',
+'vpmedia-wms-mediastreampassthru',
+'vpmedia-wms-remoting',
+'vpmedia-wms-security',
+'vpmedia-wms-snapshot',
+'vpmedia-wms-ssl',
+'vpmedia-wms-streamnamealias',
+'vpmedia-wms-test'

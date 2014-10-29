@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="dev" class="ch.qos.logback.core.ConsoleAppender">
+
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>
+				%date [%thread] %-5level %logger{35} - %msg%n
+			</Pattern>
+		</layout>
+	</appender>
+	<root>
+		<level value="dev" />
+		<appender-ref ref="dev" />
+	</root>	
+	<logger name="hu.vpmedia.media.red5.dev">
+		<level value="DEBUG" />
+	</logger>		
+</configuration>

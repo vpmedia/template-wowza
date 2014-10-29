@@ -1,0 +1,17 @@
+//
+//=BEGIN CLOSED LICENSE
+//
+// Copyright(c) 2012 András Csizmadia.
+// http://www.vpmedia.eu
+//
+// For information about the licensing and copyright please 
+// contact András Csizmadia at andras@vpmedia.eu.
+//
+//=END CLOSED LICENSE
+//
+
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}

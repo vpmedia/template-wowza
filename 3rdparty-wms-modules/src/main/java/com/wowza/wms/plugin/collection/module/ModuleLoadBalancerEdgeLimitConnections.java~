@@ -1,0 +1,93 @@
+package com.wowza.wms.plugin.collection.module;
+
+import com.wowza.wms.amf.AMFDataList;
+import com.wowza.wms.application.IApplicationInstance;
+import com.wowza.wms.client.ConnectionCounter;
+import com.wowza.wms.client.IClient;
+import com.wowza.wms.httpstreamer.cupertinostreaming.httpstreamer.HTTPStreamerSessionCupertino;
+import com.wowza.wms.httpstreamer.smoothstreaming.httpstreamer.HTTPStreamerSessionSmoothStreamer;
+import com.wowza.wms.module.ModuleBase;
+import com.wowza.wms.plugin.loadbalancer.LoadBalancerSender;
+import com.wowza.wms.plugin.loadbalancer.ServerListenerLoadBalancerSender;
+import com.wowza.wms.request.RequestFunction;
+import com.wowza.wms.rtp.model.RTPSession;
+import com.wowza.wms.server.Server;
+
+public class ModuleLoadBalancerEdgeLimitConnections extends ModuleBase
+{
+	static final public int MAXCONNECTIONS = 200;
+	
+	private ConnectionCounter counter;
+	private int maxApplicationConnections = MAXCONNECTIONS;
+	
+	private LoadBalancerSender loadBalancerSender = (LoadBalancerSender)Server.getInstance().getProperties().get(ServerListenerLoadBalancerSender.PROP_LOADBALANCERSENDER);
+	
+	public void onAppStart(IApplicationInstance appInstance)
+	{
+		this.counter = appInstance.getConnectionCounter();
+		this.maxApplicationConnections = appInstance.getProperties().getPropertyInt("maxApplicationConnections", maxApplicationConnections);
+	}
+	
+	public void changeLimit(IClient client, RequestFunction function,
+			AMFDataList params) {
+		Integer newLimit = params.getInt(PARAM1);
+		this.maxApplicationConnections = newLimit;
+	}
+	
+	private void addConnection() {
+		long count = counter.getCurrent(); 
+		
+		if ((count+1) > this.maxApplicationConnections)
+		{
+			loadBalancerSender.pause();
+		}		
+	}
+	
+	private void removeConnection() {
+		long count = counter.getCurrent(); 
+		
+		if ((count-1) < this.maxApplicationConnections)
+		{
+			loadBalancerSender.unpause();
+		}		
+	}
+	
+	public void onConnect(IClient client, RequestFunction function, AMFDataList params)
+	{		
+		addConnection();
+	}
+	
+	public void onDisconnect(IClient client, RequestFunction function, AMFDataList params) {
+		removeConnection();
+	}
+	
+	public void onHTTPSmoothStreamingSessionCreate(HTTPStreamerSessionSmoothStreamer httpSmoothStreamingSession)
+	{
+		addConnection();		
+	}
+	
+	public void onHTTPSmoothStreamingSessionDestroy(HTTPStreamerSessionSmoothStreamer httpSmoothStreamingSession)
+	{
+		removeConnection();		
+	}
+	
+	public void onHTTPCupertinoStreamingSessionCreate(HTTPStreamerSessionCupertino httpCupertinoStreamingSession)
+	{
+		addConnection();		
+	}
+
+	public void onHTTPCupertinoStreamingSessionDestroy(HTTPStreamerSessionCupertino httpCupertinoStreamingSession)
+	{
+		removeConnection();		
+	}
+
+	public void onRTPSessionCreate(RTPSession rtpSession)
+	{
+		addConnection();	
+	}
+
+	public void onRTPSessionDestroy(RTPSession rtpSession)
+	{
+		removeConnection();
+	}
+}

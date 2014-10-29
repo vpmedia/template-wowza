@@ -1,0 +1,129 @@
+<!--
+/*
+ *=BEGIN CLOSED LICENSE
+ *
+ * Copyright(c) 2012-2013 András Csizmadia.
+ * http://www.vpmedia.eu
+ *
+ * For information about the licensing and copyright please 
+ * contact András Csizmadia at andras@vpmedia.eu.
+ *
+ *=END CLOSED LICENSE
+ */
+-->
+<Root>
+    <Application>        
+        
+        <ApplicationTimeout>60000</ApplicationTimeout>
+        <PingTimeout>12000</PingTimeout>
+        <ValidationFrequency>30000</ValidationFrequency>        
+        
+        <Connections>
+            <AutoAccept>false</AutoAccept>
+            <AllowDomains></AllowDomains>
+        </Connections>            
+        <!--
+            StorageDir path variables            
+            ${com.wowza.wms.AppHome} - Application home directory
+            ${com.wowza.wms.ConfigHome} - Configuration home directory
+            ${com.wowza.wms.context.VHost} - Virtual host name
+            ${com.wowza.wms.context.Application} - Application name
+            ${com.wowza.wms.context.ApplicationInstance} - Application instance name            
+        -->            
+        
+        <Streams>
+            <StreamType>live</StreamType>
+            <StorageDir></StorageDir>
+        </Streams>            
+        
+        <SharedObjects>
+            <StorageDir>sharedobjects</StorageDir>
+        </SharedObjects>            
+        
+        <Client>
+            <IdleFrequency>-1</IdleFrequency>
+            <Access>
+                <StreamReadAccess>*</StreamReadAccess>
+                <StreamWriteAccess>*</StreamWriteAccess>
+                <StreamAudioSampleAccess>*</StreamAudioSampleAccess>
+                <StreamVideoSampleAccess>*</StreamVideoSampleAccess>
+                <SharedObjectReadAccess>*</SharedObjectReadAccess>
+                <SharedObjectWriteAccess>*</SharedObjectWriteAccess>
+            </Access>
+        </Client>
+            
+        <!-- 
+        <Repeater>
+            <OriginURL></OriginURL>
+        </Repeater> 
+        -->
+        
+        <Modules>
+            <Module>
+                <Name>base</Name>
+                <Description>Base</Description>
+                <Class>com.wowza.wms.module.ModuleCore</Class>
+            </Module>
+            <Module>
+                <Name>WebcamDev</Name>
+                <Description>Main App</Description>
+                <Class>hu.vpmedia.media.wms.dev.WebcamDev</Class>
+            </Module>
+            <Module>
+                <Name>FME</Name>
+                <Description>Flash Media Encoder plug-in</Description>
+                <Class>hu.vpmedia.media.wms.plugin.fme.FME</Class>
+            </Module>
+            <Module>
+                <Name>BWCheck</Name>
+                <Description>Bandwidth Checker</Description>
+                <Class>hu.vpmedia.media.wms.plugin.bwcheck.BWCheck</Class>
+            </Module>
+            <Module>
+                <Name>properties</Name>
+                <Description>Properties</Description>
+                <Class>com.wowza.wms.module.ModuleProperties</Class>
+            </Module>
+            <Module>
+                <Name>logging</Name>
+                <Description>Client Logging</Description>
+                <Class>com.wowza.wms.module.ModuleClientLogging</Class>
+            </Module>
+        </Modules>
+            
+        <Properties>
+            <!-- Properties defined here will be added to the IApplication.getProperties() and IApplicationInstance.getProperties() collections -->
+            <Property>
+                <Name>connection_key</Name>
+                <Value>J9BUEsaxiq5r2ZtPnakeg2MvAr477H7veryAE98AzEkeLdKkNl8H08wwMpjNpRGN</Value>
+            </Property>
+            <Property>
+                <Name>production_server</Name>
+                <Value>false</Value>
+            </Property>
+            <Property>
+                <Name>debug_level</Name>
+                <Value>3</Value>
+            </Property>
+            <Property>
+                <Name>gateway_url</Name>
+                <Value>http://localhost/appframework_v2/src/common/php/gateway.php</Value>
+            </Property>
+            <Property>
+                <Name>remoting_service</Name>
+                <Value>vpmedia.Framework</Value>
+            </Property>   
+            <Property>
+                <Name>domainLock</Name>
+                <Value>http://localhost</Value>
+            </Property>           
+            <Property>
+            	<Name>maxApplicationConnections</Name>
+            	<Value>100</Value>
+            	<Type>Integer</Type>
+            </Property>
+        </Properties>
+        
+    </Application>
+    
+</Root>
